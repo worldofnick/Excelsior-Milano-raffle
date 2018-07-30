@@ -1,9 +1,6 @@
 import requests
 import re
 import time
-import json
-from bs4 import BeautifulSoup
-import urllib
 from random import getrandbits
 from threading import Thread
 from Queue import Queue
