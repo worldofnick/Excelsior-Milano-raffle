@@ -1,6 +1,9 @@
 import requests
 import re
 import time
+import json
+from bs4 import BeautifulSoup
+import urllib
 from random import getrandbits
 from threading import Thread
 from Queue import Queue
@@ -12,6 +15,19 @@ threadLock = threading.Lock()
 
 
 requests.packages.urllib3.disable_warnings()
+
+def load_proxies(filename):
+    proxies = []
+    with open(filename) as fh:
+        for line in fh:
+            line = line.strip()
+            data = line.split(":")
+            proxies.append(data)
+    return proxies
+
+proxies = load_proxies("PATH TO YOUR PROFILE FILE HERE")
+print "Loaded: {} proxies".format(len(proxies))
+
 class Presto(object):
     counter = 1
     s = requests.Session()
@@ -38,19 +54,17 @@ class Presto(object):
     def loopThrough(self):
 
         print "\n"
-        print "Made by https://twitter.com/thebotsmith"
+        print "Made by https://twitter.com/thebotsmith - follow for free scripts every week!!"
         print "\n"
 
         time.sleep(5)
         x = 100#TODO change amount of entries per thread
 
-        r = self.s.get(self.url,headers=self.headers1,verify=False)
+        r = self.s.get(self.url,headers=self.headers1,verify=Falses)
         for i in range(x):
-            email = 'PUT YOUR EMAIL ADDRESS HERE WITHOUT SPACES+{}@gmail.com'.format(getrandbits(40)) # CHANGE YOUR.EMAIL.HERE to your email prefix. don't change the +{} after.
             try:
-
                 data = {
-                    "emailAddress":email,#TODO change all these!!
+                    "emailAddress":ctils.create_emailaccounts("@bluefountain-store.com"),#TODO change all these!!
                     "entry.1884265043":"your name",
                     "entry.1938400468":"your second name",
                     "entry.1450673532_year":"1990",
@@ -71,7 +85,7 @@ class Presto(object):
                     "fbzx":"-7523426717494581264"
                     }
 
-                r = self.s.post(self.posturl,headers=self.postheaders,verify=False,data=data)
+                r = self.s.post(self.posturl,headers=self.postheaders,verify=False,data=data,proxies=proxies)
                 if "Thank you for subscribing" in r.text:
                     print "entered using {} - {}/{}".format(email,self.counter,x)
                     self.counter += 1
@@ -85,7 +99,6 @@ class Presto(object):
     def run(self):
             self.loopThrough()
             print(Fore.GREEN + "** {} FINISHED WORK CLOSING THREAD **".format(threading.current_thread().name))
-
 
 bots = []
 
