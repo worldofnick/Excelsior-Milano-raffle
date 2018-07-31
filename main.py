@@ -1,3 +1,4 @@
+
 import requests
 import re
 import time
@@ -12,7 +13,7 @@ from colorama import init
 init(autoreset=True)
 import threading
 threadLock = threading.Lock()
-
+proxies = False
 
 requests.packages.urllib3.disable_warnings()
 
@@ -24,10 +25,11 @@ def load_proxies(filename):
             data = line.split(":")
             proxies.append(data)
     return proxies
-
-proxies = load_proxies("PATH TO YOUR PROFILE FILE HERE")
-print "Loaded: {} proxies".format(len(proxies))
-
+if proxies:
+    proxies = load_proxies("")
+    print "Loaded: {} proxies".format(len(proxies))
+else:
+    print "Not using proxies!!"
 class Presto(object):
     counter = 1
     s = requests.Session()
@@ -52,19 +54,21 @@ class Presto(object):
         }
 
     def loopThrough(self):
-
         print "\n"
         print "Made by https://twitter.com/thebotsmith - follow for free scripts every week!!"
         print "\n"
 
         time.sleep(5)
         x = 100#TODO change amount of entries per thread
-
-        r = self.s.get(self.url,headers=self.headers1,verify=False)
+        if proxies:
+            r = self.s.get(self.url,headers=self.headers1,verify=False,proxies=proxies)
+        else:
+            r = self.s.get(self.url,headers=self.headers1,verify=False)
         for i in range(x):
+            email = 'maxbanes101+{}@gmail.com'.format(getrandbits(40)),#TODO change all these!!
             try:
                 data = {
-                    "emailAddress":'PUT YOUR EMAIL ADDRESS HERE WITHOUT SPACES+{}@gmail.com'.format(getrandbits(40)),#TODO change all these!!
+                    "emailAddress":email,
                     "entry.1884265043":"your name",
                     "entry.1938400468":"your second name",
                     "entry.1450673532_year":"1990",
@@ -84,10 +88,13 @@ class Presto(object):
                     "pageHistory":"0",
                     "fbzx":"-7523426717494581264"
                     }
+                if proxies:
+                    r = self.s.post(self.posturl,headers=self.postheaders,verify=False,data=data,proxies=proxies)
+                else:
+                    r = self.s.post(self.posturl,headers=self.postheaders,verify=False,data=data)
 
-                r = self.s.post(self.posturl,headers=self.postheaders,verify=False,data=data,proxies=proxies)
                 if "Thank you for subscribing" in r.text:
-                    print "entered using {} - {}/{}".format(email,self.counter,x)
+                    print "entered sccessfully"
                     self.counter += 1
                     self.s.cookies.clear()
                     with open ("enteredaccounts.txt","a") as f:
@@ -102,7 +109,7 @@ class Presto(object):
 
 bots = []
 
-for i in range(10):#TODO amount of threads
+for i in range(25):#TODO amount of threads
     bot=Presto()
     bots.append(bot)
 
@@ -118,6 +125,3 @@ for bot in bots:
 
 for t in threads:
     t.join()
-
-
-print(Fore.CYAN + "ALL THREADS FINISHED SCRIPT READY TO EXIT")
