@@ -64,7 +64,7 @@ class Presto(object):
         for i in range(x):
             try:
                 data = {
-                    "emailAddress":ctils.create_emailaccounts("@bluefountain-store.com"),#TODO change all these!!
+                    "emailAddress":'PUT YOUR EMAIL ADDRESS HERE WITHOUT SPACES+{}@gmail.com'.format(getrandbits(40)),#TODO change all these!!
                     "entry.1884265043":"your name",
                     "entry.1938400468":"your second name",
                     "entry.1450673532_year":"1990",
