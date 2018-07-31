@@ -60,7 +60,7 @@ class Presto(object):
         time.sleep(5)
         x = 100#TODO change amount of entries per thread
 
-        r = self.s.get(self.url,headers=self.headers1,verify=Falses)
+        r = self.s.get(self.url,headers=self.headers1,verify=False)
         for i in range(x):
             try:
                 data = {
