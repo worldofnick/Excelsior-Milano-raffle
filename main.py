@@ -65,7 +65,7 @@ class Presto(object):
         else:
             r = self.s.get(self.url,headers=self.headers1,verify=False)
         for i in range(x):
-            email = 'maxbanes101+{}@gmail.com'.format(getrandbits(40)),#TODO change all these!!
+            email = 'maxbanes101+{}@gmail.com'.format(getrandbits(40))   #TODO
             try:
                 data = {
                     "emailAddress":email,
