@@ -25,11 +25,15 @@ def load_proxies(filename):
             data = line.split(":")
             proxies.append(data)
     return proxies
+
+
 if proxies:
     proxies = load_proxies("")
     print "Loaded: {} proxies".format(len(proxies))
 else:
     print "Not using proxies!!"
+    
+    
 class Presto(object):
     counter = 1
     s = requests.Session()
